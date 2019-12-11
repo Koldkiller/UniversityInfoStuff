@@ -1,0 +1,99 @@
+/* file: MethodicalPyramid.java
+ * Constructs a Pyramid with Rectangles.
+ * The height is entered by the user.
+ */
+import java.awt.*; //farben
+import acm.program.*; //ConsoleProgram
+import acm.graphics.*; //GRect
+import acm.io.IODialog;
+
+public class MethodicalPyramid extends GraphicsProgram {
+
+	int mNumberOfLayers;
+
+	public void getinput() {
+		// mNumberOfLayers = readInt("Enter number of Layers:");
+		IODialog newDialog = new IODialog();
+		newDialog.setAllowCancel(true);
+		mNumberOfLayers = newDialog.readInt("Enter an integer: ");
+
+	}
+
+	public void run() {
+		setSize(1000, 1000);
+		getinput();
+		Color newLayerColor;
+		while (mNumberOfLayers != -1) {
+			for (int layerIndex = 0; layerIndex < mNumberOfLayers; layerIndex++) {
+				newLayerColor = layerColor(layerIndex, mNumberOfLayers); // holt die Color aus Methode layercolor für
+																			// jeden
+																			// layer
+				drawLayer(layerIndex, mNumberOfLayers, newLayerColor); // drawlayer für jedes level der Pyramide
+			}
+			getinput();
+			removeAll();
+		}
+	}
+
+	public Color layerColor(int layerIndex, int numberOfLayers) {
+		/**
+		 * Returns the color to be used for bricks in the given layer.
+		 * 
+		 * @param layerIndex
+		 *            index of the layer whose color to return. {@code 0} is the bottom
+		 *            layer, {@code numberOfLayers - 1} is the top layer.
+		 * @param numberOfLayers
+		 *            the number of layers in the pyramid.
+		 * @return the color to be used for the given layer, or {@code null} if
+		 *         {@code layerIndex} is invalid.
+		 */
+
+		if (layerIndex < 0 || layerIndex > (numberOfLayers - 1) || numberOfLayers == 0) {
+			return null;
+		}
+		if (numberOfLayers == 1) {
+			return new Color(255, 0, 0);
+		}
+		double x = (220.f / ((double) (numberOfLayers - 1))); // .f das 220 ein float ist
+		int finalColor = (int) Math.ceil(x * (double) layerIndex); // x als double um nicht kürzen zu müssen, math.ceil
+																	// rundet auf
+
+		return new Color(255, finalColor, finalColor);
+
+	}
+
+	public void drawLayer(int layerIndex, int numberOfLayers, Color layerColor) {
+		/**
+		 * Draws the given layer with bricks filled with the given color. If
+		 * {@code layerIndex} is invalid, no bricks at all should be drawn.
+		 * 
+		 * @param layerIndex
+		 *            index of the layer to draw. {@code 0} is the bottom layer,
+		 *            {@code numberOfLayers - 1} is the top layer.
+		 * @param numberOfLayers
+		 *            the number of layers in the pyramid.
+		 * @param layerColor
+		 *            color the layer's bricks should be filled with. Malt eine Reihe
+		 *            der Pyramide
+		 */
+		final int width = 35;
+		final int height = 20;
+
+		if (layerIndex < 0 || layerIndex > (numberOfLayers - 1)) {
+			return;
+		}
+		int x;
+		int y;
+		for (int bricksInRow = 0; bricksInRow < (numberOfLayers - layerIndex); bricksInRow++) {
+
+			x = 500 - (width * bricksInRow) - (layerIndex * (width / 2));
+			y = 500 - (height * layerIndex);
+
+			GRect brick = new GRect(x, y, width, height);
+			brick.setFilled(true);
+			brick.setFillColor(layerColor);
+			add(brick);
+		}
+
+	}
+}

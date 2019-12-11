@@ -1,0 +1,22 @@
+/*
+ * File: Interest.java
+ * Calculates Interest Rates
+ */
+import acm.program.*;
+
+public class Interest extends ConsoleProgram {
+
+	public void run() {
+		println("Calculate Your Fortune here");
+		double Amount = readDouble("Enter Starting Money here:"); // Read Inputs
+		double Rate = readDouble("Enter Interest rate: ");
+
+		double Interest1 = Amount * (Rate / 100) + Amount; // Calculations
+		double Interest2 = Interest1 * (Rate / 100) + Interest1;
+
+		println("After one year your Balance is:" + Interest1); // Outputs
+		println("After two years your Balance is:" + Interest2);
+	}
+
+}
+

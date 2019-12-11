@@ -1,0 +1,181 @@
+**
+ * Filename: ComplexNumber.java.
+ */
+public class ComplexNumber {
+	/**
+	 * This Class does calculations with complex numbers including: addition,
+	 * subtraction, multiplication, division, conjugation and generating an absolut
+	 * value. It also converts a ComplexNumber to a String.
+	 * 
+	 * @param re
+	 *            real part of complex number.
+	 * @param im
+	 *            imaginary part of complex number.
+	 */
+
+	private final double re;
+	private final double im;
+
+	/**
+	 * Default Constructor instantiates a new complex number.
+	 */
+	public ComplexNumber() {
+
+		re = 0;
+		im = 0;
+
+	}
+
+	/**
+	 * instantiates a new complex number.
+	 * 
+	 * @param real
+	 *            = real part of the complex number.
+	 * @param imaginary
+	 *            = imaginary part of the complex number.
+	 */
+	public ComplexNumber(double real, double imaginary) {
+
+		re = real;
+		im = imaginary;
+	}
+
+	/**
+	 * This is a copy constructor.
+	 * 
+	 * @param cn
+	 *            is the copied complex Number.
+	 */
+	public ComplexNumber(ComplexNumber cn) {
+
+		re = cn.getReal();
+		im = cn.getImaginary();
+
+	}
+
+	/**
+	 * Takes the Real part of a complex number.
+	 * 
+	 * @return the Real part of the complex number.
+	 */
+	public double getReal() {
+
+		return re;
+	}
+
+	/**
+	 * Takes the Imaginary part of a complex number.
+	 * 
+	 * @return the Imaginary part of the complex number.
+	 */
+	public double getImaginary() {
+
+		return im;
+	}
+
+	/**
+	 * Conjugates a complex number.
+	 * 
+	 * @return returns the conjugate of the complex number.
+	 */
+	public ComplexNumber conjugate() {
+
+		double newIm = (-1) * im;
+		return new ComplexNumber(re, newIm);
+
+	}
+
+	/**
+	 * Adds two complex numbers.
+	 * 
+	 * @param other
+	 *            is the 2nd Complex Number.
+	 * @return returns the new complex number.
+	 */
+	public ComplexNumber add(ComplexNumber other) {
+
+		double newRe = re + other.getReal(); // is equal to other.re. because internaly other (with use of getReal) just
+												// returns its own re
+		double newIm = im + other.getImaginary();
+		return new ComplexNumber(newRe, newIm);
+	}
+
+	/**
+	 * Subtracts two complex numbers.
+	 * 
+	 * @param other
+	 *            is the 2nd Complex Number.
+	 * @return returns the new complex number.
+	 */
+	public ComplexNumber subtract(ComplexNumber other) {
+
+		double newRe = re - other.getReal();
+		double newIm = im - other.getImaginary();
+		return new ComplexNumber(newRe, newIm);
+	}
+
+	/**
+	 * Multiplies two complex numbers.
+	 * 
+	 * @param other
+	 *            is the second complex number.
+	 * @return returns the new complex number.
+	 */
+	public ComplexNumber multiply(ComplexNumber other) {
+
+		double newRe = (re * other.getReal()) - (im * other.getImaginary());
+		double newIm = (im * other.getReal()) + (re * other.getImaginary());
+		return new ComplexNumber(newRe, newIm);
+	}
+
+	/**
+	 * Divides two complex numbers (divison by 0 not allowed).
+	 * 
+	 * @param other
+	 *            is the second complex number.
+	 * @return returns the new complex number or null.
+	 */
+	public ComplexNumber divide(ComplexNumber other) {
+
+		if (!(other.getReal() == 0.0 || other.getImaginary() == 0.0)) {
+			double otherRe = other.getReal();
+			double otherIm = other.getImaginary();
+			double newRe = (re * otherRe + im * otherIm) / (Math.pow(otherRe, 2) + Math.pow(otherIm, 2));
+			double newIm = (im * otherRe - re * otherIm) / (Math.pow(otherRe, 2) + Math.pow(otherIm, 2));
+			return new ComplexNumber(newRe, newIm);
+		} else {
+			return null;
+		}
+
+	}
+
+	/**
+	 * Calculates the absolut value of a given complex number. Calculation of
+	 * Complex numbers is: sqrt(re² + im²).
+	 * 
+	 * @return returns result.
+	 */
+	public double abs() {
+
+		double result = Math.sqrt((Math.pow(re, 2) + Math.pow(im, 2)));
+		return result;
+	}
+
+	/**
+	 * Converts a complex number to a string.
+	 * 
+	 * @return returns the complex number (including i) as a String.
+	 */
+	public String toString() {
+
+		String newRe = String.valueOf(re);
+		String newIm = String.valueOf(im);
+		return newRe + "+" + newIm + "i";
+
+	}
+	/*
+	 * public static void main(String [ ] args) { //MAIN
+	 * System.out.println("Hello World"); ComplexNumber lol = new
+	 * ComplexNumber(1,2); String omg = lol.toString(); System.out.println(omg); }
+	 */
+}

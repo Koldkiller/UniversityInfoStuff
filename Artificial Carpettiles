@@ -1,0 +1,415 @@
+package programming.set10.dude;
+
+import java.awt.Color;
+import acm.graphics.*;
+import acm.program.*;
+import acm.util.RandomGenerator;
+
+/**
+ * This Class creates a Patchwork rug from 3 different patches.
+ * 
+ * @author 0815Casual (100467)
+ *
+ */
+public class PatchworkRug extends GraphicsProgram {
+	/**
+	 * This Class creates a patchwork rug from 3 different Patch classes.
+	 */
+	RandomGenerator rgen = new RandomGenerator();
+	private int patchworkColumns;
+	private int patchworkRows;
+
+	/**
+	 * Asks the User how many rows and Columns the Patchwork rug should have.
+	 */
+	public void getinput() {
+
+		patchworkRows = readInt("Enter number of Rows: ");
+		patchworkColumns = readInt("Enter number of Columns: ");
+
+	}
+
+	/**
+	 * Main method.
+	 */
+	public void run() {
+		getinput();
+		drawrug();
+	}
+
+	/**
+	 * This draws the rug, calling on the classes: Patch1, Patch2, Patch3. Adds a
+	 * random patch for each Cell.
+	 */
+	public void drawrug() {
+
+		for (int i = 0; i < patchworkRows; i++) {
+			for (int j = 0; j < patchworkColumns; j++) {
+				int bla = rgen.nextInt(0, 2);// 3 Patches
+				switch (bla) {
+				case (0):
+
+					Patch1 one = new Patch1(i, j);
+					add(one);
+					break;
+				case (1):
+
+					Patch2 two = new Patch2(i, j);
+					add(two);
+					break;
+				case (2):
+
+					Patch3 three = new Patch3(i, j);
+					add(three);
+					break;
+				default:
+					throw new IllegalArgumentException();
+
+				}
+			}
+		}
+
+	}
+}
+
+// PAtch 1
+/**
+ * The first Patch of our Patchwork Rug.
+ * 
+ * @author 0815Casual(100467)
+ *
+ */
+
+class Patch1 extends GCompound {
+	static RandomGenerator rgen = new RandomGenerator();
+
+	/**
+	 * The constructor of the first Patch.
+	 * 
+	 * @param row
+	 *            the x Coordinate of the patch.
+	 * 
+	 * @param column
+	 *            the y Coordinate of the patch.
+	 */
+	public Patch1(int row, int column) {
+		GCompound patch = new GCompound();
+		patch.add(background());
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 5; j++) {
+				patch.add(circles(), i * 20, j * 20);
+			}
+		}
+		for (int k = 0; k < 5; k++) {
+			for (int l = 0; l < 5; l++) {
+				patch.add(triangle(), k * 20, l * 20);
+			}
+		}
+		add(patch, 100 * row, 100 * column);
+	}
+
+	/**
+	 * Creates a triangle for the patch. In an extra method, because i thought i
+	 * might reuse it.
+	 * 
+	 * @return Triangle as a GPolygon.
+	 */
+	private static GPolygon triangle() { // Upwards facing triangle
+		GPoint point1 = new GPoint(10, 0);
+		GPoint point2 = new GPoint(0, 10);
+		GPoint point3 = new GPoint(20, 10);
+		GPoint point4 = new GPoint(10, 20);
+		GPoint[] points = { point1, point2, point3, point4 };
+		GPolygon diamond = new GPolygon(points);
+		diamond.setColor(getColor1());
+		diamond.setFilled(true);
+		return diamond;
+	}
+
+	/**
+	 * The backdrop of the patch.
+	 * 
+	 * @return the background as a GRect.
+	 */
+	private static GRect background() {
+		GRect backdrop = new GRect(100, 100);
+		backdrop.setColor(getColor1());
+		backdrop.setFilled(true);
+		return backdrop;
+
+	}
+
+	/**
+	 * Draws a circle for the Patch.
+	 * 
+	 * @return the circle as a GOval.
+	 */
+	private static GOval circles() {
+		GOval circle = new GOval(20, 20);
+		circle.setColor(getColor1());
+		return circle;
+	}
+
+	/**
+	 * Random Color chooser.
+	 * 
+	 * @return a random Color.
+	 */
+	private static Color getColor1() {
+		int farbe = rgen.nextInt(0, 7);
+		switch (farbe) {
+		case (0):
+			// Steelblue
+			return new Color(99, 184, 255);
+		case (1):
+			// Chocolate
+			return new Color(255, 127, 36);
+		case (2):
+			// yellowGreen
+			return new Color(173, 255, 47);
+		case (3):
+			// MediumPurple
+			return new Color(171, 130, 255);
+		case (4):
+			// GoldenRod
+			return new Color(218, 165, 32);
+		case (5):
+			// maroon
+			return new Color(255, 52, 179);
+		case (6):
+			// Orange-Red
+			return new Color(255, 69, 0);
+		case (7):
+			// Olive-drab
+			return new Color(105, 139, 34);
+		case (8):
+			// blue
+			return new Color(0, 0, 255);
+		default:
+			return new Color(0, 0, 0);
+		}
+	}
+
+}
+
+/**
+ * The second Patch of our Patchwork Rug.
+ * 
+ * @author 0815Casual(100467)
+ *
+ */
+
+class Patch2 extends GCompound {
+	static RandomGenerator rgen = new RandomGenerator();
+
+	/**
+	 * The Constructor fort the Second Patch.
+	 * 
+	 * @param row
+	 *            the row of the Patch.
+	 * @param column
+	 *            the Column of the Patch.
+	 */
+	public Patch2(int row, int column) {
+
+		GCompound patch = new GCompound();
+
+		// Background
+		GRect bla = new GRect(100, 100);
+		bla.setFilled(true);
+		bla.setFillColor(getColor2());
+		patch.add(bla);
+		// first diamond
+		GPoint point1 = new GPoint(50, 0);
+		GPoint point2 = new GPoint(100, 50);
+		GPoint point3 = new GPoint(50, 100);
+		GPoint point4 = new GPoint(0, 50);
+		GPoint[] points = { point1, point2, point3, point4 };
+		GPolygon poly = new GPolygon(points);
+		poly.setFilled(true);
+		poly.setFillColor(getColor2());
+		patch.add(poly);
+
+		GRect lastsquare = new GRect(25, 25, 50, 50);
+		lastsquare.setFilled(true);
+		lastsquare.setFillColor(getColor2());
+		patch.add(lastsquare);
+
+		GOval kreis = new GOval(25, 25, 50, 50);
+		kreis.setFilled(true);
+		kreis.setFillColor(getColor2());
+		patch.add(kreis);
+
+		GPoint bla1 = new GPoint(50, 25);
+		GPoint bla2 = new GPoint(75, 50);
+		GPoint bla3 = new GPoint(50, 75);
+		GPoint bla4 = new GPoint(25, 50);
+		GPoint[] points1 = { bla1, bla2, bla3, bla4 };
+		GPolygon poly2 = new GPolygon(points1);
+		poly2.setFilled(true);
+		poly2.setFillColor(getColor2());
+		patch.add(poly2);
+
+		GOval linksOben = new GOval(10, 10, 10, 10);
+		linksOben.setFilled(true);
+		linksOben.setFillColor(getColor2());
+
+		GOval rechtsOben = new GOval(80, 10, 10, 10);
+		rechtsOben.setFilled(true);
+		rechtsOben.setFillColor(getColor2());
+
+		GOval linksUnten = new GOval(10, 80, 10, 10);
+		linksUnten.setFilled(true);
+		linksUnten.setFillColor(getColor2());
+
+		GOval rechtsUnten = new GOval(80, 80, 10, 10);
+		rechtsUnten.setFilled(true);
+		rechtsUnten.setFillColor(getColor2());
+
+		patch.add(rechtsUnten);
+		patch.add(linksUnten);
+		patch.add(rechtsOben);
+		patch.add(linksOben);
+		add(patch, 100 * row, 100 * column);
+
+	}
+
+	/**
+	 * Random Color chooser.
+	 * 
+	 * @return a random Color.
+	 */
+	private static Color getColor2() {
+		int farbe = rgen.nextInt(0, 7);
+		switch (farbe) {
+		case (0):
+			// Steelblue
+			return new Color(99, 184, 255);
+		case (1):
+			// Chocolate
+			return new Color(255, 127, 36);
+		case (2):
+			// yellowGreen
+			return new Color(173, 255, 47);
+		case (3):
+			// MediumPurple
+			return new Color(171, 130, 255);
+		case (4):
+			// GoldenRod
+			return new Color(218, 165, 32);
+		case (5):
+			// maroon
+			return new Color(255, 52, 179);
+		case (6):
+			// Orange-Red
+			return new Color(255, 69, 0);
+		case (7):
+			// Olive-drab
+			return new Color(105, 139, 34);
+		case (8):
+			// blue
+			return new Color(0, 0, 255);
+		default:
+			return new Color(0, 0, 0);
+		}
+	}
+
+}
+
+// PATCH 3
+/**
+ * This is the third Patch of the Patchwork rug.
+ * 
+ * @author 0815Casual(100467)
+ *
+ */
+
+class Patch3 extends GCompound {
+	static RandomGenerator rgen = new RandomGenerator();
+
+	/**
+	 * Constructor for the third Patch.
+	 * 
+	 * @param row
+	 *            the row in which this patch should be.
+	 * @param column
+	 *            the column in which this patch should be.
+	 */
+	public Patch3(int row, int column) {
+		GCompound patch = new GCompound();
+		GRect background = new GRect(100, 100);
+		background.setFilled(true);
+		background.setFillColor(getColor3());
+		patch.add(background);
+
+		for (int j = 0; j < 5; j++) {
+			GRect rec = new GRect(10 * j, 20 * j, 100 - (j * 20), 10);
+			rec.setFilled(true);
+			rec.setFillColor(getColor3());
+			patch.add(rec);
+		}
+		GPoint point1 = new GPoint(0, 25);
+		GPoint point2 = new GPoint(40, 100);
+		GPoint point3 = new GPoint(0, 100);
+		GPoint[] points = { point1, point2, point3 };
+		GPolygon triangle1 = new GPolygon(points);
+
+		GPoint point11 = new GPoint(100, 25);
+		GPoint point21 = new GPoint(60, 100);
+		GPoint point31 = new GPoint(100, 100);
+		GPoint[] points2 = { point11, point21, point31 };
+		GPolygon triangle2 = new GPolygon(points2);
+
+		triangle1.setFilled(true);
+		triangle2.setFilled(true);
+		triangle1.setFillColor(getColor3());
+		triangle2.setFillColor(getColor3());
+		patch.add(triangle2);
+		patch.add(triangle1);
+
+		add(patch, 100 * row, 100 * column);
+
+	}
+
+	/**
+	 * Random Color chooser.
+	 * 
+	 * @return random Color.
+	 * 
+	 */
+	private static Color getColor3() {
+		int farbe = rgen.nextInt(0, 7);
+		switch (farbe) {
+		case (0):
+			// Steelblue
+			return new Color(99, 184, 255);
+		case (1):
+			// Chocolate
+			return new Color(255, 127, 36);
+		case (2):
+			// yellowGreen
+			return new Color(173, 255, 47);
+		case (3):
+			// MediumPurple
+			return new Color(171, 130, 255);
+		case (4):
+			// GoldenRod
+			return new Color(218, 165, 32);
+		case (5):
+			// maroon
+			return new Color(255, 52, 179);
+		case (6):
+			// Orange-Red
+			return new Color(255, 69, 0);
+		case (7):
+			// Olive-drab
+			return new Color(105, 139, 34);
+		case (8):
+			// blue
+			return new Color(0, 0, 255);
+		default:
+			return new Color(0, 0, 0);
+		}
+	}
+
+}

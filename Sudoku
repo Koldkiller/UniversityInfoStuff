@@ -1,0 +1,202 @@
+package programming.set7.sudoku;
+
+/**
+ * This Sudoku subclass extens the superclass Numberboard to create a Sudoku
+ * board.
+ * 
+ * @author 0815Caual
+ *
+ */
+public class Sudoku extends NumberBoard {
+	/**
+	 * Sudoku Constructer. Called to create a new Sudoku Board.
+	 */
+	public Sudoku() {
+
+		super(9, 9);
+	}
+
+	/**
+	 * Override of setValueAt for NumberBoard. Restricts the value between 1 and 9
+	 * (including).
+	 * 
+	 * @param row
+	 *            the x coordinate of the value.
+	 * @param col
+	 *            the y coordinate of the value.
+	 * @param value
+	 *            the value (between 1 and 9).
+	 */
+	public void setValueAt(int row, int col, int value) {
+		if ((value < 10 && value > 0) || value == EMPTY) {
+			super.setValueAt(row, col, value);
+		}
+	}
+
+	/**
+	 * This function is the culmination of the three following functions. They check
+	 * rows, columns and blocks(3x3 grids) for their validity.
+	 * 
+	 * @return True if all are valid and false if anyone is not.
+	 */
+	public boolean isValid() {
+		boolean isvalid = (validateRows() && validateColumns() && validateBlocks());
+		return isvalid;
+
+	}
+
+	/**
+	 * Validates the row/column/block array by searching for duplicates.
+	 * 
+	 * @param check
+	 *            the Integer Array of the row/column/block.
+	 * @return false if a duplicate is found, true if not.
+	 */
+	private boolean validate(int check[]) {
+		for (int k = 0; k < 9; k++) {
+			for (int l = (k + 1); l < 9; l++) {
+
+				if (check[k] == check[l] && check[k] != EMPTY) {
+
+					return false;
+				}
+			}
+
+		}
+		return true;
+	}
+
+	/**
+	 * Validates the Rows of the Sudoku. 
+	 * 
+	 * @return True if rows are valid false if not.
+	 */
+	private boolean validateRows() {
+
+		for (int rows = 0; rows < 9; rows++) {
+			int[] check = new int[9]; // column array
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < 9; j++) {
+					check[j] = getValueAt(i, j); // fills array check with values from row.
+				}
+				boolean checker = validate(check);
+				if (!checker) {
+					return false;
+				}
+
+			}
+		}
+		return true;
+
+	}
+
+	/**
+	 * Validates the Columns of the Sudoku.
+	 * 
+	 * @return true if valid false if not
+	 */
+	private boolean validateColumns() {
+
+		for (int columns = 0; columns < 9; columns++) {
+			int[] check = new int[9]; // column array always 1 row 9 times.
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < 9; j++) {
+					check[j] = getValueAt(j, i);
+				}
+
+				boolean checker = validate(check);
+				if (!checker) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Validates the 3x3 Grids within the Sudoku.
+	 * 
+	 * @return true if Grids are valid, false if not.
+	 */
+	private boolean validateBlocks() {
+
+		for (int block = 0; block < 9; block++) {
+			int k = 0;
+			int[] check = new int[9]; // Block(Grid) Array.
+			for (int i = block / 3 * 3; i < block / 3 * 3 + 3; i++) {
+				for (int j = block % 3 * 3; j < block % 3 * 3 + 3; j++) {
+					check[k] = getValueAt(i, j);
+					++k;
+
+				}
+			}
+			boolean checker = validate(check);
+			if (!checker) {
+				return false;
+
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Overrides toString() in order to print a good looking Sudoku Board.
+	 * 
+	 * @return a String in the form of the current Sudoku Board.
+	 */
+	@Override
+	public String toString() {
+		String test = "";
+
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+
+				int value = getValueAt(i, j);
+				// another thing (read from bottom to top please, otherwise this makes no sense)
+				if (value == -1) {
+					test += " ";
+				} else {
+					test += value;
+				}
+				// one thing
+				if (j == 8) {
+					test += "\n";
+				} else {
+					test += " ";
+				}
+			}
+		}
+		return test;
+	}
+
+	/**
+	 * Fill function for testing Purposes.
+	 */
+	public void fill() {
+		int[][] fieldValues = { { 3, EMPTY, 1, 2, 8, 6, 5, 7, 4 }, { 4, 8, 7, 3, 5, 9, 1, 2, 6 },
+				{ 6, 5, 2, 7, 1, 4, 8, 3, 9 }, { 8, 7, 5, 4, 3, 1, 6, 9, 2 }, { 2, EMPTY, 3, 9, 6, 7, 4, 8, 5 },
+				{ 9, 6, 4, 5, 2, 8, 7, 1, 3 }, { 1, 4, 9, 6, 7, 3, 2, 5, 8 }, { 5, 3, 8, 1, 4, 2, 9, 6, 7 },
+				{ 7, 2, 6, 8, 9, 5, 3, 4, 1 } };
+
+		for (int x = 0; x < 9; x++) {
+			for (int y = 0; y < 9; y++) {
+				setValueAt(x, y, fieldValues[x][y]);
+			}
+		}
+	}
+
+	/**
+	 * Java main, used for testing.
+	 * 
+	 * @param args
+	 *            command line arguments.
+	 */
+	public static void main(String[] args) {
+
+		Sudoku lol = new Sudoku();
+		lol.fill();
+		boolean testi = lol.isValid();
+		System.out.println(testi);
+
+	}
+}

@@ -1,0 +1,75 @@
+package programming.set9.length;
+
+/**
+ * This Enum is used for an easy Unit Conversion between different Units of
+ * Length.
+ * 
+ * 
+ * 
+ * @author 0815Casual (100467)
+ *
+ */
+public enum Length {
+
+	ARSHIN, FINGER, METRE, HORSE_LENGTH, PARSEC, PLUTO_RADIUS;
+
+	/**
+	 * Returns how much one of this unit is in meters.
+	 * 
+	 * @return one unit in meters.
+	 */
+	public double getUnitLengthInMetres() {
+		switch (this) {
+		case ARSHIN:
+			return 0.71;
+		case FINGER:
+			return 0.022225;
+		case METRE:
+			return 1.0;
+		case HORSE_LENGTH:
+			return 2.4;
+		case PARSEC:
+			return 3.0856776E16;
+		case PLUTO_RADIUS:
+			return 1186000;
+		default:
+			throw new IllegalArgumentException();
+
+		}
+	}
+
+	/**
+	 * Converts the given amount measured in the current length unit to how much it
+	 * would be in the target unit.
+	 * 
+	 * @param targetLength
+	 *            the target unit of length.
+	 * @param amount
+	 *            the length to convert to the target length.
+	 * @return the corresponding length in the target unit.
+	 */
+	public double convertTo(Length targetLength, double amount) {
+		double convertThis = this.getUnitLengthInMetres();
+		double toThis = targetLength.getUnitLengthInMetres();
+		// Conversion:
+		// unit1 into meters (amount*getUnitLengthinMeters)
+		// unit2 into meters (getUnitLengthInMeters)
+		// unit 1 (m) / unit 2 (m) = converted
+
+		return (convertThis / toThis) * amount;
+
+	}
+
+	/**
+	 * Main.
+	 * 
+	 * @param args
+	 *            Main Arguments.
+	 */
+	public static void main(String[] args) {
+		System.out.println(Length.HORSE_LENGTH.getUnitLengthInMetres());
+		System.out.println(Length.HORSE_LENGTH.convertTo(Length.HORSE_LENGTH, 3));
+
+	}
+
+}

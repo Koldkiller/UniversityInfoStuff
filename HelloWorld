@@ -1,0 +1,14 @@
+
+/*
+ * File: Helloworld.java
+ * -----------------------
+ * Prints Out Hello World!
+ */
+import acm.graphics.*; //Import acm.graphics.program didn't work (one line)
+import acm.program.*;
+
+public class HelloProgram extends GraphicsProgram { // Public: All Class can access (multiple classes)
+	public void run() { // void: kein output wert
+		add(new GLabel("Never Gonna give you up", 25, 50));
+	}
+} //Basis Lecture 2 Slide 13

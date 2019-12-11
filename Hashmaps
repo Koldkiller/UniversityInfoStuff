@@ -1,0 +1,254 @@
+package programming.set11.brownies;
+
+/**
+ * The BrownieMap, my own Java Hashmap, written by the great, the unbeatable me.
+ * 
+ * @author 0815Casual(100467).
+ *
+ * @param <K>
+ *            generic Type for the Key.
+ * @param <V>
+ *            generic Type for the Value.
+ */
+public class BrownieMap<K, V> {
+	private HashEntry<K, V>[] bucketArray;
+	private int nBuckets = 0;
+
+	/**
+	 * The capacity sets the length of the bucket array.
+	 * 
+	 * @param numberOfBuckets
+	 *            bucket array length
+	 * @throws IllegalArgumentException
+	 *             if the number of buckets is smaller than one.
+	 */
+	public BrownieMap(int numberOfBuckets) {
+		if (numberOfBuckets < 1) {
+			throw new IllegalArgumentException();
+		}
+		// Implement the constructor!
+		nBuckets = numberOfBuckets;
+		bucketArray = new HashEntry[numberOfBuckets];
+	}
+
+	/**
+	 * Put an item into the map.
+	 * 
+	 * @param key
+	 *            the key of the item.
+	 * @param value
+	 *            the value of the item.
+	 * @throws IllegalArgumentException
+	 *             if the key or the value is {@code null}.
+	 */
+
+	public void put(K key, V value) {
+		if (key == null || value == null) {
+			throw new IllegalArgumentException();
+		}
+		int bucket = Math.abs(key.hashCode()) % nBuckets;
+		HashEntry<K, V> entry = findEntry(bucketArray[bucket], key);
+		if (entry == null) {
+			entry = new HashEntry<K, V>(key, value);
+			entry.setLink(bucketArray[bucket]);
+			bucketArray[bucket] = entry;
+
+			// Implement this!
+
+		} else {
+			entry.setValue(value);
+		}
+	}
+
+	/**
+	 * the findEntry function, iterative.
+	 * 
+	 * @param entry
+	 *            the HashEntry to search for.
+	 * @param key
+	 *            the key of the searched for HashEntry.
+	 * @return the found HashEntry.
+	 */
+	private HashEntry<K, V> findEntry(HashEntry<K, V> entry, K key) {
+		while (entry != null) {
+			if (entry.getKey().equals(key)) {
+				return entry;
+			}
+			entry = entry.getLink();
+		}
+		return null;
+	}
+
+	/**
+	 * Returns the value of a given key.
+	 * 
+	 * @param key
+	 *            the key of the item.
+	 * @return the value belonging to that key or {@code null} if no value is mapped
+	 *         to that key.
+	 * @throws IllegalArgumentException
+	 *             if the key is {@code null}.
+	 */
+	public V get(K key) {
+		if (key == null) {
+			throw new IllegalArgumentException();
+		} else {
+			int bucket = Math.abs(key.hashCode()) % nBuckets;
+			HashEntry<K, V> entry = findEntry(bucketArray[bucket], key);
+
+			if (entry == null) {
+				return null;
+			} else {
+				return entry.getValue();
+			}
+		}
+		// Implement me!
+
+	}
+
+	/**
+	 * Removes one key and its value from the map. If the key does not exist in the
+	 * map, nothing happens.
+	 * 
+	 * @param key
+	 *            the key.
+	 * @throws IllegalArgumentException
+	 *             if the key is {@code null}.
+	 */
+	public void remove(K key) {
+		if (key == null) {
+			throw new IllegalArgumentException();
+		} else {
+			int bucket = Math.abs(key.hashCode()) % nBuckets;
+			HashEntry<K, V> entry = bucketArray[bucket]; // the headElement
+			HashEntry<K, V> parent = entry;
+			if (entry.getLink() == null) {
+				bucketArray[bucket] = null;
+			} else {
+				while (entry != null) {
+
+					if (entry.getKey().equals(key)) {
+						parent.setLink(entry.getLink());
+						break;
+
+					} else {
+						parent = entry;
+						entry = entry.getLink();
+					}
+				}
+			}
+
+		}
+
+		// Implement me!
+	}
+
+	/**
+	 * Clears the entire map.
+	 */
+	public void clear() {
+		for (int i = 0; i < nBuckets; i++) {
+			bucketArray[i] = null;
+
+		}
+	}
+
+	/**
+	 * Main for testing.
+	 * 
+	 * @param args
+	 *            main arguments.
+	 */
+	public static void main(String[] args) {
+		BrownieMap<Integer, String> bla = new BrownieMap<Integer, String>(5);
+		bla.put(01, "This");
+		bla.put(02, "is");
+		bla.put(03, "gay");
+		bla.remove(02);
+		bla.put(25, "TEst");
+
+		System.out.println(bla.get(01));
+		System.out.println(bla.get(02));
+		System.out.println(bla.get(03));
+		bla.clear();
+		System.out.println(bla.get(03));
+
+	}
+}
+
+/**
+ * The HashEntry class used by the Brownie Map.
+ * 
+ * @author 0815Casual(100467)
+ *
+ * @param <K>
+ *            generic Type for the Key.
+ * @param <V>
+ *            generic Type for the Value.
+ */
+class HashEntry<K, V> {
+	private K entryKey;
+	private V entryValue;
+	private HashEntry<K, V> entryLink;
+
+	/**
+	 * HashEntry constructor.
+	 * 
+	 * @param key
+	 *            the Key for the Map
+	 * @param value
+	 *            the value corresponding to the key.
+	 */
+	public HashEntry(K key, V value) {
+		entryKey = key;
+		entryValue = value;
+	}
+
+	/**
+	 * getter for the key.
+	 * 
+	 * @return the key.
+	 */
+	public K getKey() {
+		return entryKey;
+	}
+
+	/**
+	 * Returns the value of the HashEntry.
+	 * 
+	 * @return the value.
+	 */
+	public V getValue() {
+		return entryValue;
+	}
+
+	/**
+	 * Sets the value.
+	 * 
+	 * @param value
+	 *            the value.
+	 */
+	public void setValue(V value) {
+		entryValue = value;
+	}
+
+	/**
+	 * NextElement getter.
+	 * 
+	 * @return the next Element.
+	 */
+	public HashEntry<K, V> getLink() {
+		return entryLink;
+	}
+
+	/**
+	 * Sets the next Element.
+	 * 
+	 * @param nextEntry
+	 *            the next element to be set.
+	 */
+	public void setLink(HashEntry<K, V> nextEntry) {
+		entryLink = nextEntry;
+	}
+
+}

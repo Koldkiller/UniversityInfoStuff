@@ -1,0 +1,185 @@
+package programming.set6.date;
+
+/**
+ * This creates a Class for Dates.
+ * 
+ * @author 0815Casual
+ * @version 1.1
+ */
+public class Date {
+	/**
+	 * Instancevariables for Date.
+	 * 
+	 * @param day
+	 *            the day of the Date.
+	 * @param month
+	 *            the month of the Date.
+	 * @param year
+	 *            the year of the Date.
+	 * @param monthNames
+	 *            an Array of Strings for the Month names.
+	 */
+
+	private int day;
+	private int month;
+	private int year;
+	private String[] monthNames = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+
+	/**
+	 * Constructor for the Date class. Throws and Exception if date is not valid.
+	 * see below for validity function.
+	 * 
+	 * @param year
+	 *            is the year.
+	 * @param month
+	 *            is the month.
+	 * @param day
+	 *            is the day.
+	 */
+	public Date(int year, int month, int day) {
+		if (!validate(year, month, day)) {
+			throw new IllegalArgumentException("This is not a valid date.");
+		} else {
+			this.day = day;
+			this.month = month;
+			this.year = year;
+		}
+	}
+
+	/**
+	 * getDaysInMonth returns the number of Days in the given month. It also takes
+	 * leap years into account.
+	 * 
+	 * @param year
+	 *            is the year.
+	 * @param month
+	 *            is the month.
+	 * @return the number of days in given month and year.
+	 */
+	public static int getDaysInMonth(int year, int month) {
+		switch (month) {
+
+		case (1):
+			return 31;
+
+		case (2):
+			if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
+				return 29;
+			}
+			return 28;
+		case (3):
+			return 31;
+		case (4):
+			return 30;
+		case (5):
+			return 31;
+		case (6):
+			return 30;
+		case (7):
+			return 31;
+		case (8):
+			return 31;
+		case (9):
+			return 30;
+		case (10):
+			return 31;
+		case (11):
+			return 30;
+		case (12):
+			return 31;
+		default:
+			return 0;
+
+		}
+
+	}
+
+	/**
+	 * This method checks the validity of the Date.
+	 * 
+	 * @param year
+	 *            is the year.
+	 * @param month
+	 *            is the month.
+	 * @param day
+	 *            is the Day
+	 * @return true if date is valid, false if not.
+	 */
+	public static boolean validate(int year, int month, int day) {
+		boolean daysAreValid = (day > 0 && day <= getDaysInMonth(year, month));
+		boolean monthIsValid = (month > 0 && month <= 12);
+		if (monthIsValid && daysAreValid) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * The Getter for the Day.
+	 * 
+	 * @return the Day of the Date.
+	 */
+	public int getDay() {
+		return day;
+	}
+
+	/**
+	 * The Getter for the Month.
+	 * 
+	 * @return the month of the Date.
+	 */
+	public int getMonth() {
+		return month;
+	}
+
+	/**
+	 * The Getter for the Year.
+	 * 
+	 * @return the year of the Date.
+	 */
+	public int getYear() {
+		return year;
+	}
+
+	/**
+	 * Berechnet der wievielte Tag des Jahres das Date ist. i.e. der "1.03.2015" ist
+	 * der 60. Tag des Jahres 2015.
+	 * 
+	 * @return Day in Year as Integer.
+	 */
+	public int dayOfYear() {
+		int dayofYear = 0;
+		for (int i = 1; i < month; i++) {
+			dayofYear = getDaysInMonth(year, i) + dayofYear;
+		}
+		dayofYear += day;
+		return dayofYear;
+	}
+
+	/**
+	 * Subtracts one Date from another and thus shows the difference in Number of
+	 * days between the two Dates.
+	 * 
+	 * @param other
+	 *            the other instance of Class Date.
+	 * @return difference as Integer, negativ if "other" Date is in the Future.
+	 */
+	public int sameYearDiff(Date other) {
+		if (other.year == this.year) {
+			int diff = other.dayOfYear() - this.dayOfYear();
+			return diff;
+		}
+		return 0;
+	}
+
+	/**
+	 * Prints the Date into a string with the Format: Month Day, Year.
+	 * 
+	 * @return the date as a string.
+	 */
+	public String toString() {
+		String dateAsString = "";
+		dateAsString = monthNames[month] + " " + day + ", " + year;
+		return dateAsString;
+	}
+}
